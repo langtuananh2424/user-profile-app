@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6", enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -51,6 +51,21 @@
             <x-input-label for="bio" :value="__('Bio')" />
             <x-text-input id="bio" name="bio" type="text" class="mt-1 block w-full" :value="old('bio', $user->bio)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('bio')" />
+        </div>
+
+        <div>
+            <x-input-label for="avatar" :value="__('Avatar')" />
+            @if (auth()->user()->avatar)
+                <div class="mt-4">
+                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="Avatar" class="rounded-full w-20 h-20">
+                </div>
+            @else
+                <div class="mt-4">
+                    <img src="{{ asset('storage/' . 'defaultavatar.jpg')}}" alt="Avatar" class="rounded-full w-20 h-20">
+                </div>
+            @endif
+            <x-text-input id="avatar" name="avatar" type="file" class="mt-1 block w-full" />
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 
         <div class="flex items-center gap-4">
